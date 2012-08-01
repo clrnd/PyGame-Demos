@@ -1,0 +1,2 @@
+fullscreen=0
+players=2

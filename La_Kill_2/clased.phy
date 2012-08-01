@@ -1,0 +1,85 @@
+import pygame,random
+from pygame.locals import *
+
+class Ldj():
+	def __init__(self,w,h):
+		self.leng = 0
+		self.x = w/2
+		self.y = h/2
+		self.dir_x = 1
+		self.dir_y = 1
+	
+	def Put(self):
+		if self.leng > 100:
+			self.x = random.randint(-1,1)	
+			self.y = random.randint(-1,1)	
+			self.leng = 0
+		self.x += self.dir_x
+		self.y += self.dir_y
+		scr.blit(img,(x,y))
+
+def main():
+	#Init
+	pygame.mixer.pre_init(44100,-16,2, 1024)
+	pygame.init()
+	w = 800
+	h = 600
+	scr =  pygame.display.set_mode((w,h))
+	pygame.display.set_caption("La Kill 2")
+	#Loading fonts
+	font = pygame.font.Font(None, 36)
+	font_big = pygame.font.Font(None, 66)
+	#Loading sounds
+	shot = pygame.mixer.Sound("shot.ogg")
+	yeah = pygame.mixer.Sound("bass.ogg")
+	idiot = pygame.mixer.Sound("idiot.ogg")
+	win = pygame.mixer.Sound("win.ogg")
+	win2 = pygame.mixer.Sound("win2.ogg")
+	looser = pygame.mixer.Sound("looser.ogg")
+	#Loading Images
+	img = pygame.image.load("bush.png")
+        img.convert_alpha()
+	#Loading Clocks
+	clk = pygame.time.Clock()
+
+	scr.fill((50,50,50))
+	text = font.render("Alvare-ClrnD", 1, (50,50,250),(50,50,50))
+	text2 = font_big.render("La Kill 2", 1, (250,250,50),(50,50,50))
+	scr.blit(text2,(w/2-100,h/2-20))
+	scr.blit(text,(5,h-50))
+	pygame.display.flip()
+	loop=1	
+	#pygame.time.delay(5000)
+	
+	while loop:
+        	for event in pygame.event.get():
+        	        if event.type == pygame.MOUSEBUTTONDOWN:
+        	                if event.button == 1:
+        	                        pygame.mixer.music.load("guitar.ogg")
+        	                elif event.button == 3:
+        	                        pygame.mixer.music.load("fondo.ogg")
+        	                else:
+        	                        try:
+        	                                pygame.mixer.music.load("mexico.ogg")
+        	                        except:
+        	                                pygame.mixer.music.load("guitar.ogg")
+        	                                pass
+				loop = 0
+			elif event.type == pygame.QUIT:
+				loop = 0
+	loop = 1
+	scr.fill((50,50,50))
+	score = 0
+	gy = Ldj(w,h)
+	while loop:
+		gy.Put()
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				loop = 0
+			elif event.type == pygame.MOUSEBUTTONDOWN:
+				mouse_x,mouse_y=event.pos
+				r,g,b,a=scr.get_at((mouse_x,mouse_y))
+				if (r,g,b) != (50,50,50):
+					score += 1
+	clk.tick(50)
+if __name__ == '__main__': main()
